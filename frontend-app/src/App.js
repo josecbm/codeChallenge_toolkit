@@ -7,21 +7,26 @@ import fileSlice, { selectItems } from './features/fileSlice';
 import { useDispatch } from 'react-redux'
 import { addItems } from './features/fileSlice'
 import { useSelector } from 'react-redux'
+
 function App() {
   const [dataTable, setDataTable] = useState([])
   const [search, setSearch] = useState('')
   const dispatch = useDispatch();
   const items = useSelector(selectItems);
   useEffect(() => {
-    const fetchPostList = async () => {
-      const { data } = await axios.get('http://localhost:3000/files/data');
-      setDataTable(data)
-      dispatch(addItems(data))
-    }
     fetchPostList();
   }, [])
 
-  const handleSearch = () =>{
+  const fetchPostList = async () => {
+    const { data } = await axios.get(`http://localhost:3000/files/data`);
+    dispatch(addItems(data))
+    setDataTable(data)
+  }
+  const handleSearch = async() =>{
+    if(search=='') fetchPostList();
+    const { data } = await axios.get(`http://localhost:3000/files/data?fileName=${search}`);
+    setDataTable(data)
+    dispatch(addItems(data))
     setSearch("");
   }
   

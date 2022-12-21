@@ -1,35 +1,60 @@
 import express from 'express'
 import axios from 'axios'
 const router = express.Router()
+const config = {
+    headers: { Authorization: `Bearer aSuperSecretKey` }
+};
+const { data } = await axios.get('https://echo-serv.tbxnet.com/v1/secret/files', config);
 router.get('/data', async (req, res) => {
-    let contenedor = []
-    let contLineas = []
-    let fileName
-    const config = {
-        headers: { Authorization: `Bearer aSuperSecretKey` }
-    };
-    const { data } = await axios.get('https://echo-serv.tbxnet.com/v1/secret/files', config);
+    const { fileName } = req.query;
+    let contenedor = [];
+    let contLineas = [];
+    let fileNameRaw;
+    let flagError = false;
     const files = data.files;
-    for (let file of files) {
+
+    if (fileName != undefined) {
         contLineas = [];
         try {
-            const { data } = await axios.get(`https://echo-serv.tbxnet.com/v1/secret/file/${file}`, config);
+            const { data } = await axios.get(`https://echo-serv.tbxnet.com/v1/secret/file/${fileName}`, config);
             const dataParse = CSVToArray(data);
             for (let i = 1; i < dataParse.length; i++) {
                 const element = dataParse[i];
-                fileName = element[0]
+                fileNameRaw = element[0]
                 contLineas.push({
                     text: element[1] !== undefined ? element[1] : '',
                     number: element[2] !== undefined ? element[2] : '',
                     hex: element[3] !== undefined ? element[3] : ''
                 })
             }
-            if (contLineas.length > 0) contenedor.push({ file: fileName, lines: contLineas })
+            if (contLineas.length > 0) contenedor.push({ file: fileNameRaw, lines: contLineas })
         } catch (error) {
-            console.log(`el archivo ${file} no tiene data`)
+            console.log(`el archivo ${fileName} no tiene data`);
+            flagError = true;
+        }
+    } else {
+        for (let file of files) {
+            contLineas = [];
+            try {
+                const { data } = await axios.get(`https://echo-serv.tbxnet.com/v1/secret/file/${file}`, config);
+                const dataParse = CSVToArray(data);
+                for (let i = 1; i < dataParse.length; i++) {
+                    const element = dataParse[i];
+                    fileNameRaw = element[0]
+                    contLineas.push({
+                        text: element[1] !== undefined ? element[1] : '',
+                        number: element[2] !== undefined ? element[2] : '',
+                        hex: element[3] !== undefined ? element[3] : ''
+                    })
+                }
+                if (contLineas.length > 0) contenedor.push({ file: fileNameRaw, lines: contLineas })
+            } catch (error) {
+                console.log(`el archivo ${file} no tiene data`);
+            }
         }
     }
-    res.status(200).json(contenedor)
+    if(flagError) res.status(500).json(`el archivo ${fileName} no tiene data`)
+    else res.status(200).json(contenedor)
 })
 
 const CSVToArray = (strData, strDelimiter) => {
