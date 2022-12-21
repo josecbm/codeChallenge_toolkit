@@ -18,13 +18,13 @@ function App() {
   }, [])
 
   const fetchPostList = async () => {
-    const { data } = await axios.get(`http://localhost:3000/files/data`);
+    const { data } = await axios.get(`http://35.168.16.124:3000/files/data`);
     dispatch(addItems(data))
     setDataTable(data)
   }
   const handleSearch = async() =>{
     if(search=='') fetchPostList();
-    const { data } = await axios.get(`http://localhost:3000/files/data?fileName=${search}`);
+    const { data } = await axios.get(`http://35.168.16.124:3000/files/data?fileName=${search}`);
     setDataTable(data)
     dispatch(addItems(data))
     setSearch("");
