@@ -4,8 +4,8 @@ const router = express.Router()
 const config = {
     headers: { Authorization: `Bearer aSuperSecretKey` }
 };
-const { data } = await axios.get('https://echo-serv.tbxnet.com/v1/secret/files', config);
 router.get('/data', async (req, res) => {
+    const { data } = await axios.get('https://echo-serv.tbxnet.com/v1/secret/files', config);
     const { fileName } = req.query;
     let contenedor = [];
     let contLineas = [];
