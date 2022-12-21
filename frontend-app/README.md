@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# Code Challenge
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Full Stack JS - Code Challenge - Español ****
 
-## Available Scripts
+## **Iniciar Aplicación**
 
-In the project directory, you can run:
+Para iniciar la aplicación con docker compose se escribe el siguiente comando en consola en el directorio del proyecto
 
-### `npm start`
+```docker
+docker-compose up
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Al terminar de construir las imagenes se accede al navegador con la url *[http://localhost:3000/](http://localhost:3000/)*
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Screen Shot 2022-12-21 at 12.15.26.png](img/app.png)
 
-### `npm test`
+Al iniciar la aplicación encontramos la tabla con la información, esta información es consultada a la API construida donde lo primero que hace la función es consultar los nombres de los archivos, luego consulta individualmente la información según el nombre del archivo y luego esta información se concatena al objeto que se devuelve al final.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+(Adicional) En la parte superior encontramos un buscador que nos permite filtrar por medio del nombre del archivo. Este parametro es enviado y procesado para filtrar y devolver solamente los objetos relacionados al texto ingresado.
 
-### `npm run build`
+## **Entorno de Desarrollo**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### **Backend**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Para correr el proyecto en un entorno de desarrollo por primera vez se deben seguir los siguientes pasos.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Ir a la carpeta `backend`
+- Installar los paquetes con el comando `npm install`
+- Correr la aplicación con el comando `npm run dev`
+- Si se desea correr las pruebas unitarias, se corren con el comando `npm run test` (Opcional)
 
-### `npm run eject`
+## **Entorno de Producción**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Para correr el proyecto para el entorno de producción o mediante Docker y Docker-Compose se deben seguir los siguientes pasos.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Ir a la carpeta `frontend`
+- Generar el build de la aplicación con el comando `npm run build`
+- Ir a la raíz del repositorio
+- Correr el comando `docker-compose up --build -d`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## **Consideraciones**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- El puerto utilizado para la API es el 3000.
+- El puerto utilizado para el entorno de desarrollo de React puede ser cualquiera a excepción del 3000.
+- El puerto de exposición de la página web en el entorno de producción es el 80.
 
-## Learn More
+## Frontend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Tecnologias utilizadas 🚀
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Node](https://nodejs.org/en/)
+- [React](https://es.reactjs.org/)
+- [React-Bootstrap](https://react-bootstrap.github.io/)
+- [Bootstrap-CDN](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
+- [Jest](https://jestjs.io/docs/getting-started)
+- [enzyme](https://enzymejs.github.io/enzyme/)
 
-### Code Splitting
+### TESTS 🧪
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+La apliación cuenta con un archivo app.test.js que realiza un snapshot del componente para permitir ver los cambios realizados y que el flujo del componente se siga manteniendo.
 
-### Analyzing the Bundle Size
+    `cd front
+    npm install
+    npm run test`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Dockerfile 🐳
 
-### Making a Progressive Web App
+Para construir la imagen de la aplicación en react, se utiliza *node:12* y *nginx:alpine* .
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+    `FROM node:12-alpine
+    FROM nginx:alpine`
 
-### Advanced Configuration
+Se crea una variable de entorno llamada *PORT* para enviarla al archivo nginx.conf. la imagen queda expuesta en el puerto 3000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+    `ENV PORT 3000
+    ENV HOST 0.0.0.0
+    EXPOSE 3000`
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
