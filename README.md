@@ -1,7 +1,5 @@
 # Code Challenge
 
-## Full Stack JS - Code Challenge - Español ****
-
 ## **Iniciar Aplicación**
 
 Para iniciar la aplicación con docker compose se escribe el siguiente comando en consola en el directorio del proyecto
