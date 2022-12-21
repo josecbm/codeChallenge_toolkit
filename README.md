@@ -1,5 +1,9 @@
 # Code Challenge
 
+
+## AWS 
+Toda la infraestructura, tanto frontend como backend estan montados en una maquina virtual ec2, donde pueden validar el challenge desarrollado.
+Enlace en la nube AWS [Toolkit challenge](http://35.168.16.124).
 ## **Iniciar Aplicación**
 
 Para iniciar la aplicación con docker compose se escribe el siguiente comando en consola en el directorio del proyecto
