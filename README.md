@@ -65,24 +65,15 @@ La apliación cuenta con un archivo app.test.js que realiza un snapshot del comp
 
 Para construir la imagen de la aplicación en react, se utiliza *node:12* y *nginx:alpine* .
 
+
+Se crea un entorno para enviarla al archivo nginx.conf. la imagen queda expuesta en el puerto 3000
+
     `
     FROM nginx:alpine
     EXPOSE 80
     COPY nginx.conf /etc/nginx/nginx.conf
     COPY build/ /usr/share/nginx/html
     `
-
-Se crea una variable de entorno llamada *PORT* para enviarla al archivo nginx.conf. la imagen queda expuesta en el puerto 3000
-
-    `
-    FROM node:12-alpine
-WORKDIR app
-COPY package.json .
-RUN npm install --production
-COPY . .
-
-EXPOSE 3000
-CMD [ "node", "./" ]
     `
 
 ---
